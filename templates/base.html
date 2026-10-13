@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Schedule</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <div class="site-container">
+    <header class="site-header">
+      <a href="{% url 'home' %}" class="site-title">Student Schedule</a>
+    </header>
+
+    <div class="banner">
+      <div class="banner-group">{{ group_name }}</div>
+      <div class="banner-week">{{ current_week }}</div>
+    </div>
+
+    <nav class="days-nav">
+      {% for d in days_list %}
+        <a href="{% url 'day_schedule' d.key %}" class="day-tab {% if active_day == d.key %}active{% endif %}">{{ d.short }}</a>
+      {% endfor %}
+    </nav>
+
+    <main class="main-content">
+      {% block content %}
+      {% endblock %}
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    {{ group_name }} Schedule &copy; 2026
+  </footer>
+</body>
+</html>

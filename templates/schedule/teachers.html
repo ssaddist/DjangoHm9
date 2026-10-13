@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="section-header">
+  <h1 class="section-title">Teachers List</h1>
+  <a href="{% url 'week_schedule' %}" class="btn-secondary">Schedule</a>
+</div>
+
+<div class="teachers-list">
+  {% for teacher in teachers %}
+    <div class="teacher-card">
+      <div class="teacher-card-left">
+        <div class="teacher-avatar">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div>
+          <div class="teacher-name">{{ teacher.name }}</div>
+          <div class="teacher-subjects">{{ teacher.subjects.all|join:", " }}</div>
+        </div>
+      </div>
+      <div class="badge-classes">
+        {{ teacher.lessons.count }} classes
+      </div>
+    </div>
+  {% empty %}
+    <div class="empty-day">
+      <div class="empty-day-title">Список порожній</div>
+      <div class="empty-day-sub">Викладачів ще не додано.</div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

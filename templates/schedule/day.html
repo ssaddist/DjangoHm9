@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="section-header">
+  <h1 class="section-title">{{ day_info.name|upper }}'S SCHEDULE</h1>
+  <a href="{% url 'week_schedule' %}" class="btn-secondary">View Week</a>
+</div>
+
+{% if lessons %}
+  <div class="day-schedule-list">
+    {% for lesson in lessons %}
+      <div class="day-item {% if lesson.is_cancelled %}cancelled{% endif %}">
+        <div class="day-item-left">
+          <div class="day-item-index">{{ forloop.counter }}. {{ lesson.start_time|time:"H:i" }}</div>
+          <div>
+            {% if lesson.is_cancelled %}
+              <div><span class="cancelled-tag">CANCELLED</span></div>
+              <div class="day-item-name">{{ lesson.subject.name }} (Canceled)</div>
+            {% else %}
+              <div class="day-item-name">{{ lesson.subject.name }}</div>
+            {% endif %}
+            <div class="day-item-meta">Teacher: {{ lesson.teacher.name }} &bull; Room: {{ lesson.classroom }} &bull; Time: {{ lesson.start_time|time:"H:i" }} - {{ lesson.end_time|time:"H:i" }}</div>
+          </div>
+        </div>
+        <a href="{% url 'lesson_detail' lesson.pk %}" class="btn-secondary">Details</a>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty-day">
+    <div class="empty-day-title">Вихідний</div>
+    <div class="empty-day-sub">На цей день пар немає.</div>
+  </div>
+{% endif %}
+{% endblock %}

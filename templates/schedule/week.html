@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="section-header">
+  <h1 class="section-title">Weekly Schedule</h1>
+  <a href="{% url 'home' %}" class="btn-secondary">Overview</a>
+</div>
+
+<div class="table-wrapper">
+  <table class="schedule-table">
+    <thead>
+      <tr>
+        <th>Time</th>
+        {% for d in table_days %}
+          <th><a href="{% url 'day_schedule' d.key %}">{{ d.name }}</a></th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+        <tr>
+          <td class="time-col">{{ forloop.counter }}. {{ row.time_label }}</td>
+          {% for cell in row.cells %}
+            <td>
+              {% if cell.lesson %}
+                <a href="{% url 'lesson_detail' cell.lesson.pk %}" class="pair-card {% if cell.lesson.is_cancelled %}cancelled{% endif %}">
+                  {% if cell.lesson.is_cancelled %}
+                    <span class="cancelled-tag">CANCELLED</span>
+                    <div class="pair-title">{{ cell.lesson.subject.name }} (Canceled)</div>
+                  {% else %}
+                    <div class="pair-title">{{ cell.lesson.subject.name }}</div>
+                  {% endif %}
+                  <div class="pair-sub">Room: {{ cell.lesson.classroom }} &bull; {{ cell.lesson.teacher.name }}</div>
+                </a>
+              {% endif %}
+            </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
